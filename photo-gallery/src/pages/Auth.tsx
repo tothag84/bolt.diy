@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
 import { Logo } from '@/components/ui/Logo';
@@ -7,10 +7,8 @@ import { Button } from '@/components/ui/Button';
 import { Field, Input } from '@/components/ui/Input';
 import { PhotoImage } from '@/components/gallery/PhotoImage';
 import { useAuth } from '@/lib/store';
-import { PLANS, planById } from '@/lib/plans';
 import { toast } from '@/components/ui/Toast';
-import type { PlanId } from '@/lib/types';
-import { cn } from '@/lib/utils';
+import { FREE_FEATURES } from '@/lib/donations';
 
 function AuthShell({ children }: { children: React.ReactNode }) {
   return (
@@ -33,12 +31,12 @@ function AuthShell({ children }: { children: React.ReactNode }) {
       {/* Visual side */}
       <div className="relative hidden overflow-hidden lg:block">
         <PhotoImage seed="auth-cover" w={1200} h={1600} priority className="absolute inset-0 h-full w-full" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/40 to-brand-900/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-950/30 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-12">
           <blockquote className="max-w-md font-display text-2xl font-semibold leading-snug text-white">
-            “Lumière turned my gallery delivery into the best part of the client experience.”
+            “Free, gorgeous galleries my clients love — and the tips are a lovely bonus.”
           </blockquote>
-          <p className="mt-4 text-sm text-zinc-300">Sofia Marchetti — Wedding Photographer</p>
+          <p className="mt-4 text-sm text-white/70">Sofia Marchetti — Wedding Photographer</p>
         </div>
       </div>
     </div>
@@ -46,11 +44,8 @@ function AuthShell({ children }: { children: React.ReactNode }) {
 }
 
 export function SignUp() {
-  const [params] = useSearchParams();
   const navigate = useNavigate();
   const signUp = useAuth((s) => s.signUp);
-  const initialPlan = (params.get('plan') as PlanId) || 'pro';
-  const [plan, setPlan] = useState<PlanId>(planById(initialPlan) ? initialPlan : 'pro');
   const [form, setForm] = useState({ name: '', email: '', studioName: '', password: '' });
 
   const submit = (e: React.FormEvent) => {
@@ -59,15 +54,16 @@ export function SignUp() {
       toast.error('Please add your name and email');
       return;
     }
-    signUp({ name: form.name, email: form.email, studioName: form.studioName, plan });
+    signUp({ name: form.name, email: form.email, studioName: form.studioName });
     toast.success(`Welcome to Lumière, ${form.name.split(' ')[0]}!`);
     navigate('/app');
   };
 
   return (
     <AuthShell>
-      <h1 className="font-display text-3xl font-bold text-white">Create your studio</h1>
-      <p className="mt-2 text-sm text-zinc-400">Start free — no credit card required.</p>
+      <span className="pill mb-4">100% free — no card required</span>
+      <h1 className="font-display text-3xl font-bold text-neutral-950">Create your studio</h1>
+      <p className="mt-2 text-sm text-neutral-600">Start sharing beautiful galleries in minutes.</p>
 
       <form onSubmit={submit} className="mt-7 space-y-4">
         <Field label="Full name">
@@ -104,41 +100,22 @@ export function SignUp() {
           />
         </Field>
 
-        <div>
-          <span className="mb-2 block text-sm font-medium text-zinc-300">Choose a plan</span>
-          <div className="grid grid-cols-3 gap-2">
-            {PLANS.map((p) => (
-              <button
-                key={p.id}
-                type="button"
-                onClick={() => setPlan(p.id)}
-                className={cn(
-                  'rounded-xl border p-3 text-left transition',
-                  plan === p.id
-                    ? 'border-brand-400/60 bg-brand-500/10'
-                    : 'border-white/10 bg-white/[0.02] hover:border-white/20',
-                )}
-              >
-                <span className="flex items-center justify-between text-sm font-semibold text-white">
-                  {p.name}
-                  {plan === p.id && <Check className="h-3.5 w-3.5 text-brand-300" />}
-                </span>
-                <span className="mt-0.5 block text-xs text-zinc-500">
-                  {p.priceMonthly === 0 ? 'Free' : `$${p.priceMonthly}/mo`}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-
         <Button type="submit" className="w-full" size="lg">
-          Create account <ArrowRight className="h-4 w-4" />
+          Create free account <ArrowRight className="h-4 w-4" />
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-zinc-500">
+      <ul className="mt-6 grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+        {FREE_FEATURES.slice(0, 4).map((f) => (
+          <li key={f} className="flex items-center gap-2 text-xs text-neutral-500">
+            <Check className="h-3.5 w-3.5 text-accent-600" /> {f}
+          </li>
+        ))}
+      </ul>
+
+      <p className="mt-6 text-center text-sm text-neutral-500">
         Already have an account?{' '}
-        <Link to="/signin" className="font-medium text-brand-300 hover:text-brand-200">
+        <Link to="/signin" className="font-medium text-accent-700 hover:text-accent-800">
           Sign in
         </Link>
       </p>
@@ -164,8 +141,8 @@ export function SignIn() {
 
   return (
     <AuthShell>
-      <h1 className="font-display text-3xl font-bold text-white">Welcome back</h1>
-      <p className="mt-2 text-sm text-zinc-400">Sign in to manage your galleries.</p>
+      <h1 className="font-display text-3xl font-bold text-neutral-950">Welcome back</h1>
+      <p className="mt-2 text-sm text-neutral-600">Sign in to manage your galleries.</p>
 
       <form onSubmit={submit} className="mt-7 space-y-4">
         <Field label="Email">
@@ -191,13 +168,11 @@ export function SignIn() {
         </Button>
       </form>
 
-      <p className="mt-3 text-center text-xs text-zinc-600">
-        Demo mode — any email signs you in.
-      </p>
+      <p className="mt-3 text-center text-xs text-neutral-400">Demo mode — any email signs you in.</p>
 
-      <p className="mt-6 text-center text-sm text-zinc-500">
+      <p className="mt-6 text-center text-sm text-neutral-500">
         New to Lumière?{' '}
-        <Link to="/signup" className="font-medium text-brand-300 hover:text-brand-200">
+        <Link to="/signup" className="font-medium text-accent-700 hover:text-accent-800">
           Create an account
         </Link>
       </p>

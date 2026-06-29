@@ -43,13 +43,13 @@ export function pluralize(n: number, word: string, plural?: string): string {
 export function classByStatus(status: string): string {
   switch (status) {
     case 'published':
-      return 'text-emerald-300 bg-emerald-500/10 border-emerald-500/20';
+      return 'text-emerald-700 bg-emerald-50 border-emerald-200';
     case 'draft':
-      return 'text-amber-300 bg-amber-500/10 border-amber-500/20';
+      return 'text-amber-700 bg-amber-50 border-amber-200';
     case 'archived':
-      return 'text-zinc-400 bg-white/5 border-white/10';
+      return 'text-neutral-500 bg-neutral-100 border-neutral-200';
     default:
-      return 'text-zinc-400 bg-white/5 border-white/10';
+      return 'text-neutral-500 bg-neutral-100 border-neutral-200';
   }
 }
 

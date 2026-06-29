@@ -25,14 +25,13 @@ export function Collections() {
   const visible = useMemo(
     () =>
       collections.filter(
-        (c) =>
-          (filter === 'all' || c.status === filter) && c.title.toLowerCase().includes(q.toLowerCase().trim()),
+        (c) => (filter === 'all' || c.status === filter) && c.title.toLowerCase().includes(q.toLowerCase().trim()),
       ),
     [collections, q, filter],
   );
 
   const copyLink = (slug: string) => {
-    const url = `${window.location.origin}/g/${slug}`;
+    const url = `${window.location.origin}${import.meta.env.BASE_URL}g/${slug}`.replace(/([^:]\/)\/+/g, '$1');
     navigator.clipboard?.writeText(url).catch(() => {});
     toast.success('Gallery link copied to clipboard');
   };
@@ -41,8 +40,8 @@ export function Collections() {
     <DashboardLayout>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-2xl font-bold text-white sm:text-3xl">Collections</h1>
-          <p className="mt-1 text-sm text-zinc-400">{pluralize(collections.length, 'gallery', 'galleries')} total</p>
+          <h1 className="font-display text-2xl font-bold text-neutral-950 sm:text-3xl">Collections</h1>
+          <p className="mt-1 text-sm text-neutral-600">{pluralize(collections.length, 'gallery', 'galleries')} total</p>
         </div>
         <Button onClick={() => navigate('/app/collections/new')}>
           <Plus className="h-4 w-4" /> New collection
@@ -52,22 +51,17 @@ export function Collections() {
       {/* Toolbar */}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative max-w-xs flex-1">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
-          <Input
-            placeholder="Search collections..."
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            className="pl-9"
-          />
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+          <Input placeholder="Search collections..." value={q} onChange={(e) => setQ(e.target.value)} className="pl-9" />
         </div>
-        <div className="flex gap-1 rounded-xl border border-white/10 bg-white/[0.02] p-1">
+        <div className="flex gap-1 rounded-lg border border-neutral-200 bg-white p-1">
           {filters.map((f) => (
             <button
               key={f}
               onClick={() => setFilter(f)}
               className={cn(
-                'rounded-lg px-3 py-1.5 text-sm capitalize transition',
-                filter === f ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-white',
+                'rounded-md px-3 py-1.5 text-sm capitalize transition',
+                filter === f ? 'bg-neutral-900 text-white' : 'text-neutral-600 hover:text-neutral-950',
               )}
             >
               {f}
@@ -88,7 +82,7 @@ export function Collections() {
                 layout
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="group card relative overflow-hidden"
+                className="group card relative overflow-hidden hover:shadow-soft"
               >
                 <Link to={`/app/collections/${c.id}`}>
                   <PhotoImage
@@ -104,7 +98,7 @@ export function Collections() {
                 <div className="absolute right-3 top-3">
                   <button
                     onClick={() => setMenu(menu === c.id ? null : c.id)}
-                    className="grid h-8 w-8 place-items-center rounded-lg bg-black/40 text-white backdrop-blur transition hover:bg-black/60"
+                    className="grid h-8 w-8 place-items-center rounded-lg bg-white/90 text-neutral-700 shadow-xs backdrop-blur transition hover:bg-white"
                     aria-label="Options"
                   >
                     <MoreVertical className="h-4 w-4" />
@@ -112,7 +106,7 @@ export function Collections() {
                   {menu === c.id && (
                     <>
                       <div className="fixed inset-0 z-10" onClick={() => setMenu(null)} />
-                      <div className="absolute right-0 z-20 mt-1 w-44 overflow-hidden rounded-xl border border-white/10 bg-ink-800 py-1 shadow-card">
+                      <div className="absolute right-0 z-20 mt-1 w-44 overflow-hidden rounded-xl border border-neutral-200 bg-white py-1 shadow-lift">
                         <MenuItem
                           icon={Copy}
                           label="Copy client link"
@@ -124,7 +118,7 @@ export function Collections() {
                         <MenuItem
                           icon={Eye}
                           label="Open gallery"
-                          onClick={() => window.open(`/g/${c.slug}`, '_blank')}
+                          onClick={() => window.open(`${import.meta.env.BASE_URL}g/${c.slug}`, '_blank')}
                         />
                         <MenuItem
                           icon={Trash2}
@@ -143,13 +137,16 @@ export function Collections() {
 
                 <div className="p-4">
                   <div className="flex items-start justify-between gap-2">
-                    <Link to={`/app/collections/${c.id}`} className="truncate font-medium text-white hover:text-brand-200">
+                    <Link
+                      to={`/app/collections/${c.id}`}
+                      className="truncate font-medium text-neutral-950 hover:text-accent-700"
+                    >
                       {c.title}
                     </Link>
                     <Badge className={classByStatus(c.status)}>{c.status}</Badge>
                   </div>
-                  <p className="mt-1 truncate text-xs text-zinc-500">{formatDate(c.eventDate)}</p>
-                  <div className="mt-3 flex items-center gap-4 text-xs text-zinc-400">
+                  <p className="mt-1 truncate text-xs text-neutral-500">{formatDate(c.eventDate)}</p>
+                  <div className="mt-3 flex items-center gap-4 text-xs text-neutral-600">
                     <span className="inline-flex items-center gap-1">
                       <Images className="h-3.5 w-3.5" /> {c.photos.length}
                     </span>
@@ -185,8 +182,8 @@ function MenuItem({
     <button
       onClick={onClick}
       className={cn(
-        'flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm transition hover:bg-white/5',
-        danger ? 'text-red-300 hover:bg-red-500/10' : 'text-zinc-300',
+        'flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm transition',
+        danger ? 'text-danger-600 hover:bg-danger-50' : 'text-neutral-700 hover:bg-neutral-100',
       )}
     >
       <Icon className="h-4 w-4" /> {label}
@@ -196,12 +193,12 @@ function MenuItem({
 
 function EmptyState({ onCreate }: { onCreate: () => void }) {
   return (
-    <div className="grid place-items-center rounded-3xl border border-dashed border-white/15 bg-white/[0.02] py-20 text-center">
-      <div className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-white/5 text-brand-300">
+    <div className="grid place-items-center rounded-2xl border border-dashed border-neutral-300 bg-neutral-50 py-20 text-center">
+      <div className="mb-4 grid h-14 w-14 place-items-center rounded-2xl border border-accent-200 bg-accent-50 text-accent-700">
         <Images className="h-7 w-7" />
       </div>
-      <h3 className="font-display text-lg font-semibold text-white">No collections yet</h3>
-      <p className="mt-1 max-w-sm text-sm text-zinc-500">
+      <h3 className="font-display text-lg font-semibold text-neutral-950">No collections yet</h3>
+      <p className="mt-1 max-w-sm text-sm text-neutral-500">
         Create your first collection to start delivering beautiful galleries to your clients.
       </p>
       <Button className="mt-6" onClick={onCreate}>

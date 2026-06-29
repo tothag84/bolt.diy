@@ -36,7 +36,7 @@ export const toast = {
 const icons = {
   success: <CheckCircle2 className="h-5 w-5 text-emerald-400" />,
   error: <XCircle className="h-5 w-5 text-red-400" />,
-  info: <Info className="h-5 w-5 text-brand-300" />,
+  info: <Info className="h-5 w-5 text-accent-500" />,
 };
 
 export function ToastViewport() {
@@ -53,7 +53,7 @@ export function ToastViewport() {
             exit={{ opacity: 0, x: 40, scale: 0.9 }}
             transition={{ type: 'spring', stiffness: 350, damping: 30 }}
             onClick={() => remove(t.id)}
-            className="pointer-events-auto flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 bg-ink-800/90 px-4 py-3 text-sm text-white shadow-card backdrop-blur-xl"
+            className="pointer-events-auto flex cursor-pointer items-center gap-3 rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-neutral-800 shadow-lift"
           >
             {icons[t.kind]}
             <span className="flex-1">{t.message}</span>

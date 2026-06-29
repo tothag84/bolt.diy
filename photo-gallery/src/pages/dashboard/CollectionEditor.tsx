@@ -27,6 +27,8 @@ import type { Collection, GalleryLayout, GalleryStatus } from '@/lib/types';
 
 type Tab = 'photos' | 'settings' | 'share';
 
+const galleryHref = (slug: string) => `${import.meta.env.BASE_URL}g/${slug}`.replace(/([^:]\/)\/+/g, '$1');
+
 export function CollectionEditor() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -39,7 +41,6 @@ export function CollectionEditor() {
   const addPhotos = useGalleries((s) => s.addPhotos);
   const removePhoto = useGalleries((s) => s.removePhoto);
 
-  // Resolve / bootstrap the working collection.
   const [workingId, setWorkingId] = useState<string | null>(isNew ? null : id ?? null);
   useEffect(() => {
     if (isNew && !workingId) {
@@ -56,7 +57,7 @@ export function CollectionEditor() {
     return (
       <DashboardLayout>
         <div className="grid place-items-center py-32 text-center">
-          <p className="text-zinc-400">Collection not found.</p>
+          <p className="text-neutral-600">Collection not found.</p>
           <Button className="mt-4" variant="outline" onClick={() => navigate('/app/collections')}>
             Back to collections
           </Button>
@@ -73,7 +74,7 @@ export function CollectionEditor() {
       <div className="mb-6">
         <button
           onClick={() => navigate('/app/collections')}
-          className="mb-4 inline-flex items-center gap-1.5 text-sm text-zinc-400 hover:text-white"
+          className="mb-4 inline-flex items-center gap-1.5 text-sm text-neutral-600 hover:text-neutral-950"
         >
           <ArrowLeft className="h-4 w-4" /> Collections
         </button>
@@ -82,15 +83,15 @@ export function CollectionEditor() {
             <input
               value={collection.title}
               onChange={(e) => patch({ title: e.target.value })}
-              className="w-full max-w-xl truncate bg-transparent font-display text-2xl font-bold text-white outline-none focus:text-brand-100 sm:text-3xl"
+              className="w-full max-w-xl truncate rounded-md bg-transparent font-display text-2xl font-bold text-neutral-950 outline-none focus:bg-neutral-100 focus:px-2 sm:text-3xl"
             />
             <div className="mt-2 flex items-center gap-3">
               <Badge className={classByStatus(collection.status)}>{collection.status}</Badge>
-              <span className="text-sm text-zinc-500">{collection.photos.length} photos</span>
+              <span className="text-sm text-neutral-500">{collection.photos.length} photos</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={() => window.open(`/g/${collection.slug}`, '_blank')}>
+            <Button variant="outline" size="sm" onClick={() => window.open(galleryHref(collection.slug), '_blank')}>
               <ExternalLink className="h-4 w-4" /> Preview
             </Button>
             {collection.status !== 'published' ? (
@@ -114,7 +115,7 @@ export function CollectionEditor() {
       </div>
 
       {/* Tabs */}
-      <div className="mb-6 flex gap-1 border-b border-white/10">
+      <div className="mb-6 flex gap-1 border-b border-neutral-200">
         {(
           [
             ['photos', 'Photos', ImagePlus],
@@ -127,12 +128,12 @@ export function CollectionEditor() {
             onClick={() => setTab(key)}
             className={cn(
               'relative flex items-center gap-2 px-4 py-3 text-sm font-medium transition',
-              tab === key ? 'text-white' : 'text-zinc-400 hover:text-white',
+              tab === key ? 'text-neutral-950' : 'text-neutral-500 hover:text-neutral-900',
             )}
           >
             <Icon className="h-4 w-4" /> {label}
             {tab === key && (
-              <motion.span layoutId="tab-underline" className="absolute inset-x-0 -bottom-px h-0.5 brand-gradient" />
+              <motion.span layoutId="tab-underline" className="absolute inset-x-0 -bottom-px h-0.5 bg-accent-500" />
             )}
           </button>
         ))}
@@ -148,11 +149,17 @@ export function CollectionEditor() {
           onRemove={(pid) => removePhoto(collection.id, pid)}
         />
       )}
-      {tab === 'settings' && <SettingsTab collection={collection} patch={patch} onDelete={() => {
-        deleteCollection(collection.id);
-        toast.success('Collection deleted');
-        navigate('/app/collections');
-      }} />}
+      {tab === 'settings' && (
+        <SettingsTab
+          collection={collection}
+          patch={patch}
+          onDelete={() => {
+            deleteCollection(collection.id);
+            toast.success('Collection deleted');
+            navigate('/app/collections');
+          }}
+        />
+      )}
       {tab === 'share' && <ShareTab collection={collection} />}
     </DashboardLayout>
   );
@@ -186,25 +193,20 @@ function PhotosTab({
         onClick={onAdd}
         className={cn(
           'mb-6 grid cursor-pointer place-items-center rounded-2xl border-2 border-dashed py-12 text-center transition',
-          drag ? 'border-brand-400 bg-brand-500/10' : 'border-white/15 bg-white/[0.02] hover:border-white/30',
+          drag ? 'border-accent-400 bg-accent-50' : 'border-neutral-300 bg-neutral-50 hover:border-neutral-400',
         )}
       >
-        <div className="grid h-12 w-12 place-items-center rounded-xl bg-white/5 text-brand-300">
+        <div className="grid h-12 w-12 place-items-center rounded-xl border border-accent-200 bg-accent-50 text-accent-700">
           <ImagePlus className="h-6 w-6" />
         </div>
-        <p className="mt-3 font-medium text-white">Drop photos here or click to upload</p>
-        <p className="mt-1 text-sm text-zinc-500">JPG, PNG, HEIC up to 100MB each · demo adds sample photos</p>
+        <p className="mt-3 font-medium text-neutral-950">Drop photos here or click to upload</p>
+        <p className="mt-1 text-sm text-neutral-500">JPG, PNG, HEIC up to 100MB each · demo adds sample photos</p>
       </div>
 
       {collection.photos.length > 0 ? (
-        <PhotoGrid
-          photos={collection.photos}
-          layout="grid"
-          onOpen={() => {}}
-          onRemove={(p) => onRemove(p.id)}
-        />
+        <PhotoGrid photos={collection.photos} layout="grid" onOpen={() => {}} onRemove={(p) => onRemove(p.id)} />
       ) : (
-        <p className="py-12 text-center text-sm text-zinc-500">No photos yet — upload some to get started.</p>
+        <p className="py-12 text-center text-sm text-neutral-500">No photos yet — upload some to get started.</p>
       )}
     </div>
   );
@@ -241,10 +243,7 @@ function SettingsTab({
             />
           </Field>
           <Field label="Status">
-            <Select
-              value={collection.status}
-              onChange={(e) => patch({ status: e.target.value as GalleryStatus })}
-            >
+            <Select value={collection.status} onChange={(e) => patch({ status: e.target.value as GalleryStatus })}>
               <option value="draft">Draft</option>
               <option value="published">Published</option>
               <option value="archived">Archived</option>
@@ -253,17 +252,17 @@ function SettingsTab({
         </div>
 
         <div>
-          <span className="mb-2 block text-sm font-medium text-zinc-300">Gallery layout</span>
+          <span className="mb-2 block text-sm font-medium text-neutral-700">Gallery layout</span>
           <div className="grid grid-cols-3 gap-2">
             {(['masonry', 'grid', 'columns'] as GalleryLayout[]).map((l) => (
               <button
                 key={l}
                 onClick={() => patch({ layout: l })}
                 className={cn(
-                  'flex flex-col items-center gap-2 rounded-xl border p-3 text-xs capitalize transition',
+                  'flex flex-col items-center gap-2 rounded-lg border p-3 text-xs capitalize transition',
                   collection.layout === l
-                    ? 'border-brand-400/60 bg-brand-500/10 text-white'
-                    : 'border-white/10 text-zinc-400 hover:border-white/20',
+                    ? 'border-accent-400 bg-accent-50 text-accent-700'
+                    : 'border-neutral-300 text-neutral-600 hover:border-neutral-400',
                 )}
               >
                 <Layout className="h-4 w-4" />
@@ -290,21 +289,21 @@ function SettingsTab({
           onChange={(v) => patch({ allowDownloads: v })}
         />
         <Toggle
-          icon={SettingsIcon}
-          label="Enable print & download store"
-          desc="Sell prints and digital files."
-          checked={collection.storeEnabled}
-          onChange={(v) => patch({ storeEnabled: v })}
+          icon={Heart}
+          label="Enable tips & donations"
+          desc="Show a 'support the photographer' button."
+          checked={collection.tipsEnabled}
+          onChange={(v) => patch({ tipsEnabled: v })}
         />
 
         <div className="card p-4">
           <div className="flex items-center gap-3">
-            <span className="grid h-9 w-9 place-items-center rounded-lg bg-white/5 text-brand-300">
+            <span className="grid h-9 w-9 place-items-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-700">
               <Lock className="h-4 w-4" />
             </span>
             <div className="flex-1">
-              <p className="text-sm font-medium text-white">PIN protection</p>
-              <p className="text-xs text-zinc-500">Require a 4-digit PIN to view.</p>
+              <p className="text-sm font-medium text-neutral-950">PIN protection</p>
+              <p className="text-xs text-neutral-500">Require a 4-digit PIN to view.</p>
             </div>
           </div>
           <Input
@@ -317,12 +316,9 @@ function SettingsTab({
           />
         </div>
 
-        <button
-          onClick={onDelete}
-          className="mt-2 inline-flex items-center gap-2 rounded-xl border border-red-500/20 px-4 py-2.5 text-sm text-red-300 transition hover:bg-red-500/10"
-        >
+        <Button variant="danger" className="mt-2" onClick={onDelete}>
           <Trash2 className="h-4 w-4" /> Delete this collection
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -344,26 +340,20 @@ function Toggle({
   return (
     <button
       onClick={() => onChange(!checked)}
-      className="flex w-full items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4 text-left transition hover:border-white/20"
+      className="flex w-full items-center gap-3 rounded-xl border border-neutral-200 bg-white p-4 text-left transition hover:border-neutral-300"
     >
-      <span className="grid h-9 w-9 place-items-center rounded-lg bg-white/5 text-brand-300">
+      <span className="grid h-9 w-9 place-items-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-700">
         <Icon className="h-4 w-4" />
       </span>
       <span className="flex-1">
-        <span className="block text-sm font-medium text-white">{label}</span>
-        <span className="block text-xs text-zinc-500">{desc}</span>
+        <span className="block text-sm font-medium text-neutral-950">{label}</span>
+        <span className="block text-xs text-neutral-500">{desc}</span>
       </span>
       <span
-        className={cn(
-          'relative h-6 w-11 shrink-0 rounded-full transition',
-          checked ? 'brand-gradient' : 'bg-white/10',
-        )}
+        className={cn('relative h-6 w-11 shrink-0 rounded-full transition', checked ? 'bg-accent-500' : 'bg-neutral-300')}
       >
         <span
-          className={cn(
-            'absolute top-1 h-4 w-4 rounded-full bg-white transition-all',
-            checked ? 'left-6' : 'left-1',
-          )}
+          className={cn('absolute top-1 h-4 w-4 rounded-full bg-white shadow-sm transition-all', checked ? 'left-6' : 'left-1')}
         />
       </span>
     </button>
@@ -374,7 +364,7 @@ function Toggle({
 
 function ShareTab({ collection }: { collection: Collection }) {
   const [copied, setCopied] = useState(false);
-  const url = `${window.location.origin}/g/${collection.slug}`;
+  const url = `${window.location.origin}${galleryHref(collection.slug)}`;
   const copy = () => {
     navigator.clipboard?.writeText(url).catch(() => {});
     setCopied(true);
@@ -384,14 +374,14 @@ function ShareTab({ collection }: { collection: Collection }) {
   return (
     <div className="max-w-2xl space-y-6">
       {collection.status !== 'published' && (
-        <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
           This gallery is a {collection.status}. Publish it so clients can open the link.
         </div>
       )}
 
       <div className="card p-6">
-        <h3 className="font-display text-lg font-semibold text-white">Client gallery link</h3>
-        <p className="mt-1 text-sm text-zinc-400">Share this private link with your client.</p>
+        <h3 className="font-display text-lg font-semibold text-neutral-950">Client gallery link</h3>
+        <p className="mt-1 text-sm text-neutral-600">Share this private link with your client.</p>
         <div className="mt-4 flex gap-2">
           <Input readOnly value={url} className="font-mono text-xs" />
           <Button onClick={copy} className="shrink-0">
@@ -400,8 +390,9 @@ function ShareTab({ collection }: { collection: Collection }) {
           </Button>
         </div>
         {collection.pin && (
-          <p className="mt-3 inline-flex items-center gap-1.5 text-sm text-zinc-400">
-            <Lock className="h-3.5 w-3.5" /> Protected with PIN <span className="font-mono text-white">{collection.pin}</span>
+          <p className="mt-3 inline-flex items-center gap-1.5 text-sm text-neutral-600">
+            <Lock className="h-3.5 w-3.5" /> Protected with PIN{' '}
+            <span className="font-mono font-medium text-neutral-950">{collection.pin}</span>
           </p>
         )}
       </div>
@@ -414,11 +405,11 @@ function ShareTab({ collection }: { collection: Collection }) {
         ].map((a) => (
           <button
             key={a.label}
-            onClick={() => toast.info('Available on Pro & Studio plans')}
-            className="card p-4 text-left transition hover:border-white/20"
+            onClick={() => toast.info('Coming soon')}
+            className="card p-4 text-left transition hover:border-neutral-300"
           >
-            <p className="text-sm font-medium text-white">{a.label}</p>
-            <p className="mt-1 text-xs text-zinc-500">{a.desc}</p>
+            <p className="text-sm font-medium text-neutral-950">{a.label}</p>
+            <p className="mt-1 text-xs text-neutral-500">{a.desc}</p>
           </button>
         ))}
       </div>

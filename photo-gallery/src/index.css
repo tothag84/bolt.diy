@@ -4,11 +4,11 @@
 
 @layer base {
   :root {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   * {
-    @apply border-white/10;
+    @apply border-neutral-200;
   }
 
   html {
@@ -18,11 +18,19 @@
   }
 
   body {
-    @apply bg-ink-950 text-zinc-200 font-sans antialiased;
+    @apply bg-white text-neutral-900 font-sans antialiased;
+  }
+
+  /* Tight, modern headings (Geist/Inter feel). */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply tracking-tight text-neutral-950;
   }
 
   ::selection {
-    @apply bg-brand-500/30 text-white;
+    @apply bg-accent-500/15 text-neutral-950;
   }
 
   /* Custom scrollbar */
@@ -34,12 +42,12 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-white/10 rounded-full;
+    @apply bg-neutral-300 rounded-full;
     border: 2px solid transparent;
     background-clip: padding-box;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-white/20;
+    @apply bg-neutral-400;
   }
 }
 
@@ -48,31 +56,28 @@
     @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
   }
 
-  .text-gradient {
-    @apply bg-gradient-to-r from-white via-white to-brand-300 bg-clip-text text-transparent;
-  }
-
-  .brand-gradient {
-    @apply bg-gradient-to-r from-brand-500 to-fuchsia-500;
+  .card {
+    @apply rounded-xl border border-neutral-200 bg-white shadow-card;
   }
 
   .glass {
-    @apply bg-white/[0.03] backdrop-blur-xl border border-white/10;
-  }
-
-  .card {
-    @apply rounded-2xl border border-white/10 bg-ink-900/60 shadow-card;
+    @apply bg-white/75 backdrop-blur-xl border border-neutral-200/80;
   }
 
   .focus-ring {
-    @apply outline-none focus-visible:ring-2 focus-visible:ring-brand-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950;
+    @apply outline-none focus-visible:ring-2 focus-visible:ring-accent-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white;
+  }
+
+  /* Subtle pill used for eyebrows / labels. */
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs font-medium text-neutral-600;
   }
 }
 
 @layer utilities {
   .mask-fade-b {
-    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;

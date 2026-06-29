@@ -41,7 +41,7 @@ export function PhotoGrid({
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.5, delay: Math.min(i, 8) * 0.03 }}
             className={cn(
-              'group relative cursor-pointer overflow-hidden rounded-xl bg-ink-800',
+              'group relative cursor-pointer overflow-hidden rounded-xl bg-neutral-100',
               broken ? 'aspect-[4/3]' : 'mb-4 break-inside-avoid md:mb-5',
             )}
             onClick={() => onOpen(i)}
@@ -59,7 +59,7 @@ export function PhotoGrid({
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
             {fav && (
-              <span className="absolute left-2.5 top-2.5 grid h-7 w-7 place-items-center rounded-full bg-fuchsia-500/90 text-white shadow-lg">
+              <span className="absolute left-2.5 top-2.5 grid h-7 w-7 place-items-center rounded-full bg-accent-500 text-white shadow-lg">
                 <Heart className="h-3.5 w-3.5 fill-current" />
               </span>
             )}
@@ -73,7 +73,7 @@ export function PhotoGrid({
                     onToggleFavorite(p);
                   }}
                 >
-                  <Heart className={cn('h-4 w-4', fav && 'fill-fuchsia-400 text-fuchsia-400')} />
+                  <Heart className={cn('h-4 w-4', fav && 'fill-accent-400 text-accent-400')} />
                 </ActionChip>
               )}
               {allowDownloads && (

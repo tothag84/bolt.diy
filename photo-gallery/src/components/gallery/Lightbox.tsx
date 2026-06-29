@@ -57,7 +57,7 @@ export function Lightbox({
 
   return (
     <motion.div
-      className="fixed inset-0 z-[70] flex flex-col bg-ink-950/95 backdrop-blur-md"
+      className="fixed inset-0 z-[70] flex flex-col bg-neutral-950/97 backdrop-blur-md"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -73,7 +73,7 @@ export function Lightbox({
           </IconBtn>
           {allowFavorites && (
             <IconBtn label="Favorite" onClick={() => onToggleFavorite(photo)}>
-              <Heart className={cn('h-5 w-5 transition', fav && 'fill-fuchsia-500 text-fuchsia-500')} />
+              <Heart className={cn('h-5 w-5 transition', fav && 'fill-accent-500 text-accent-500')} />
             </IconBtn>
           )}
           {allowDownloads && (
@@ -113,7 +113,7 @@ export function Lightbox({
             onClick={() => onIndexChange(i)}
             className={cn(
               'relative h-14 w-20 shrink-0 overflow-hidden rounded-md ring-2 transition',
-              i === index ? 'ring-brand-400' : 'ring-transparent opacity-50 hover:opacity-100',
+              i === index ? 'ring-accent-400' : 'ring-transparent opacity-50 hover:opacity-100',
             )}
           >
             <img src={photoUrl(p.seed, 160, 112)} alt="" className="h-full w-full object-cover" />

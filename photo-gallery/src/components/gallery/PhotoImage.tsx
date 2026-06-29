@@ -22,10 +22,10 @@ export function PhotoImage({
 }) {
   const [loaded, setLoaded] = useState(false);
   return (
-    <div className={cn('relative overflow-hidden bg-ink-800', className)}>
+    <div className={cn('relative overflow-hidden bg-neutral-100', className)}>
       {!loaded && (
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-black/[0.04] to-transparent" />
         </div>
       )}
       <img

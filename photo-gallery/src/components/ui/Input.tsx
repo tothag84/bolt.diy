@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 
 const fieldCls =
-  'w-full rounded-xl bg-white/[0.04] border border-white/10 px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 transition-colors focus-ring focus-visible:border-brand-400/50 hover:border-white/20';
+  'w-full rounded-lg bg-white border border-neutral-300 px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 transition-colors focus-ring focus-visible:border-accent-500 hover:border-neutral-400';
 
 export const Input = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   ({ className, ...props }, ref) => <input ref={ref} className={cn(fieldCls, className)} {...props} />,
@@ -36,9 +36,9 @@ export function Field({
 }) {
   return (
     <label className="block space-y-1.5">
-      <span className="text-sm font-medium text-zinc-300">{label}</span>
+      <span className="text-sm font-medium text-neutral-700">{label}</span>
       {children}
-      {hint && <span className="block text-xs text-zinc-500">{hint}</span>}
+      {hint && <span className="block text-xs text-neutral-500">{hint}</span>}
     </label>
   );
 }

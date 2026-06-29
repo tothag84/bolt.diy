@@ -1,12 +1,9 @@
-export type PlanId = 'starter' | 'pro' | 'studio';
-
 export interface User {
   id: string;
   name: string;
   email: string;
   studioName: string;
   avatarSeed: string;
-  plan: PlanId;
   createdAt: string;
 }
 
@@ -38,21 +35,13 @@ export interface Collection {
   pin?: string;
   allowDownloads: boolean;
   allowFavorites: boolean;
-  storeEnabled: boolean;
+  /** Show a "tip / support the photographer" button on the public gallery. */
+  tipsEnabled: boolean;
   photos: Photo[];
   views: number;
+  /** Donations received on this gallery (demo). */
+  tipCount: number;
+  tipTotal: number;
   createdAt: string;
   updatedAt: string;
-}
-
-export interface Plan {
-  id: PlanId;
-  name: string;
-  priceMonthly: number;
-  priceYearly: number;
-  tagline: string;
-  storage: string;
-  highlight?: boolean;
-  features: string[];
-  cta: string;
 }

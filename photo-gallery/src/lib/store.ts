@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Collection, Photo, PlanId, User } from './types';
+import type { Collection, Photo, User } from './types';
 import { SEED_COLLECTIONS } from './seed';
 import { uid } from './utils';
 
@@ -10,7 +10,7 @@ import { uid } from './utils';
 
 interface AuthState {
   user: User | null;
-  signUp: (data: { name: string; email: string; studioName: string; plan: PlanId }) => User;
+  signUp: (data: { name: string; email: string; studioName: string }) => User;
   signIn: (email: string) => User;
   signOut: () => void;
   updateUser: (patch: Partial<User>) => void;
@@ -20,14 +20,13 @@ export const useAuth = create<AuthState>()(
   persist(
     (set, get) => ({
       user: null,
-      signUp: ({ name, email, studioName, plan }) => {
+      signUp: ({ name, email, studioName }) => {
         const user: User = {
           id: uid('usr'),
           name,
           email,
           studioName: studioName || `${name.split(' ')[0]}'s Studio`,
           avatarSeed: email,
-          plan,
           createdAt: new Date().toISOString(),
         };
         set({ user });
@@ -35,7 +34,6 @@ export const useAuth = create<AuthState>()(
       },
       signIn: (email) => {
         const existing = get().user;
-        // Demo auth: reuse stored user, otherwise mint a friendly account.
         const user: User =
           existing && existing.email === email
             ? existing
@@ -45,7 +43,6 @@ export const useAuth = create<AuthState>()(
                 email,
                 studioName: 'My Studio',
                 avatarSeed: email,
-                plan: 'pro',
                 createdAt: new Date().toISOString(),
               };
         set({ user });
@@ -71,6 +68,8 @@ interface GalleryState {
   removePhoto: (collectionId: string, photoId: string) => void;
   /** Toggle a client favorite (keyed by client email) on the public gallery. */
   toggleClientFavorite: (slug: string, photoId: string, clientEmail: string) => void;
+  /** Record a tip / donation on a gallery (demo). */
+  addTip: (slug: string, amount: number) => void;
   incrementViews: (slug: string) => void;
   bySlug: (slug: string) => Collection | undefined;
   byId: (id: string) => Collection | undefined;
@@ -119,9 +118,11 @@ export const useGalleries = create<GalleryState>()(
           pin: data.pin,
           allowDownloads: data.allowDownloads ?? true,
           allowFavorites: data.allowFavorites ?? true,
-          storeEnabled: data.storeEnabled ?? false,
-          photos: data.photos || newPhotos(data.photos ? 0 : 9),
+          tipsEnabled: data.tipsEnabled ?? true,
+          photos: data.photos || newPhotos(9),
           views: 0,
+          tipCount: 0,
+          tipTotal: 0,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         };
@@ -163,6 +164,12 @@ export const useGalleries = create<GalleryState>()(
             };
           }),
         })),
+      addTip: (slug, amount) =>
+        set((s) => ({
+          collections: s.collections.map((c) =>
+            c.slug === slug ? { ...c, tipCount: c.tipCount + 1, tipTotal: c.tipTotal + amount } : c,
+          ),
+        })),
       incrementViews: (slug) =>
         set((s) => ({
           collections: s.collections.map((c) => (c.slug === slug ? { ...c, views: c.views + 1 } : c)),
@@ -171,6 +178,6 @@ export const useGalleries = create<GalleryState>()(
       byId: (id) => get().collections.find((c) => c.id === id),
       reset: () => set({ collections: SEED_COLLECTIONS }),
     }),
-    { name: 'lumiere-galleries' },
+    { name: 'lumiere-galleries-v2' },
   ),
 );

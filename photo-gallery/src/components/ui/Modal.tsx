@@ -36,9 +36,9 @@ export function Modal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className="absolute inset-0 bg-ink-950/80 backdrop-blur-sm" onClick={onClose} />
+          <div className="absolute inset-0 bg-neutral-950/40 backdrop-blur-sm" onClick={onClose} />
           <motion.div
-            className={cn('relative w-full max-w-md card p-6', className)}
+            className={cn('relative w-full max-w-md card p-6 shadow-lift', className)}
             initial={{ opacity: 0, scale: 0.96, y: 12 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 12 }}
@@ -46,12 +46,12 @@ export function Modal({
           >
             <button
               onClick={onClose}
-              className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-lg text-zinc-400 hover:bg-white/5 hover:text-white focus-ring"
+              className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-lg text-neutral-400 hover:bg-neutral-100 hover:text-neutral-900 focus-ring"
               aria-label="Close"
             >
               <X className="h-4 w-4" />
             </button>
-            {title && <h3 className="mb-4 font-display text-xl font-bold text-white">{title}</h3>}
+            {title && <h3 className="mb-4 font-display text-xl font-bold text-neutral-950">{title}</h3>}
             {children}
           </motion.div>
         </motion.div>

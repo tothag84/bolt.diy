@@ -2,25 +2,28 @@ import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
-type Variant = 'primary' | 'secondary' | 'ghost' | 'outline' | 'danger';
+type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
 type Size = 'sm' | 'md' | 'lg';
 
 const base =
-  'inline-flex items-center justify-center gap-2 font-medium rounded-xl transition-all duration-200 focus-ring disabled:opacity-50 disabled:pointer-events-none select-none active:scale-[0.98]';
+  'inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus-ring disabled:opacity-50 disabled:pointer-events-none select-none active:scale-[0.985]';
 
 const variants: Record<Variant, string> = {
-  primary:
-    'text-white brand-gradient shadow-[0_8px_30px_-8px_rgba(139,92,246,0.6)] hover:shadow-[0_10px_40px_-8px_rgba(139,92,246,0.8)] hover:brightness-110',
-  secondary: 'bg-white text-ink-950 hover:bg-zinc-200',
-  outline: 'border border-white/15 text-white hover:bg-white/5 hover:border-white/25',
-  ghost: 'text-zinc-300 hover:text-white hover:bg-white/5',
-  danger: 'bg-red-500/90 text-white hover:bg-red-500',
+  // Main accent — bright Supabase green with dark text
+  primary: 'bg-accent-400 text-neutral-950 shadow-xs hover:bg-accent-500',
+  // Secondary — white with border
+  secondary: 'border border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50',
+  // Outline — hairline on white
+  outline: 'border border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50 hover:border-neutral-400',
+  ghost: 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-950',
+  // Secondary accent — solid brick-red destructive
+  danger: 'bg-danger-500 text-white hover:bg-danger-600',
 };
 
 const sizes: Record<Size, string> = {
   sm: 'text-sm px-3.5 py-2',
-  md: 'text-sm px-5 py-2.5',
-  lg: 'text-base px-7 py-3.5',
+  md: 'text-sm px-4 py-2.5',
+  lg: 'text-[15px] px-6 py-3',
 };
 
 interface BaseProps {

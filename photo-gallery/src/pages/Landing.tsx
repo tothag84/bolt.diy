@@ -2,42 +2,41 @@ import { motion } from 'framer-motion';
 import {
   ArrowRight,
   Heart,
-  ShoppingBag,
   Download,
   Lock,
-  Palette,
-  Globe,
   Images,
-  Sparkles,
   Star,
   Play,
+  Share2,
+  Sparkles,
+  Smartphone,
 } from 'lucide-react';
 import { SiteNav, SiteFooter } from '@/components/layout/SiteNav';
-import { Button, LinkButton } from '@/components/ui/Button';
+import { LinkButton } from '@/components/ui/Button';
 import { Reveal } from '@/components/ui/Reveal';
-import { PricingTable } from '@/components/marketing/PricingTable';
+import { SupportSection } from '@/components/marketing/SupportSection';
 import { FaqAccordion } from '@/components/marketing/FaqAccordion';
 import { PhotoImage } from '@/components/gallery/PhotoImage';
-import { scrollToId } from '@/lib/utils';
 
 export function Landing() {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden bg-white">
       <BackgroundFX />
       <SiteNav />
       <Hero />
       <TrustBar />
       <Features />
       <Showcase />
-      <ProofingHighlight />
-      <section id="pricing" className="container-px scroll-mt-24 py-24">
-        <SectionHeading
-          eyebrow="Pricing"
-          title="Simple pricing that scales with you"
-          subtitle="Start free. Upgrade when your studio grows. Cancel anytime."
-        />
-        <div className="mt-12">
-          <PricingTable />
+      <section id="support" className="scroll-mt-24 bg-neutral-50 py-24">
+        <div className="container-px">
+          <SectionHeading
+            eyebrow="Free + supported by you"
+            title="Free for everyone, forever"
+            subtitle="No subscriptions. No paywalls. Lumière stays free thanks to optional donations."
+          />
+          <div className="mt-12">
+            <SupportSection />
+          </div>
         </div>
       </section>
       <Testimonials />
@@ -57,10 +56,9 @@ export function Landing() {
 
 function BackgroundFX() {
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10">
-      <div className="absolute inset-0 bg-grid-faint bg-[size:64px_64px] mask-fade-b opacity-40" />
-      <div className="absolute left-1/2 top-[-10%] h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-brand-600/20 blur-[120px]" />
-      <div className="absolute right-[-10%] top-[30%] h-[400px] w-[400px] rounded-full bg-fuchsia-600/10 blur-[120px]" />
+    <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[820px]">
+      <div className="absolute inset-0 bg-grid-faint bg-[size:64px_64px] mask-fade-b opacity-70" />
+      <div className="absolute left-1/2 top-[-12%] h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-accent-200/40 blur-[120px]" />
     </div>
   );
 }
@@ -76,54 +74,48 @@ function Hero() {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="mx-auto max-w-4xl"
       >
-        <button
-          onClick={() => scrollToId('features')}
-          className="group mx-auto mb-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm text-zinc-300 backdrop-blur transition hover:border-white/20"
-        >
-          <Sparkles className="h-3.5 w-3.5 text-brand-300" />
-          New — built-in print store & client proofing
-          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-        </button>
+        <span className="pill mx-auto mb-7">
+          <Sparkles className="h-3.5 w-3.5 text-accent-600" />
+          100% free · supported by tips
+        </span>
 
-        <h1 className="font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-7xl">
-          Client galleries your
+        <h1 className="font-display text-5xl font-extrabold leading-[1.04] tracking-tight text-neutral-950 sm:text-7xl">
+          Beautiful photo galleries,
           <br />
-          <span className="bg-gradient-to-r from-brand-300 via-fuchsia-300 to-brand-200 bg-clip-text text-transparent">
-            photos deserve
-          </span>
+          <span className="text-accent-600">free for everyone</span>
         </h1>
 
-        <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400">
-          Deliver stunning, on-brand galleries your clients love. Let them favorite, download and buy prints — while
-          you look effortlessly professional and get paid faster.
+        <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-neutral-600">
+          Share stunning, on-brand galleries your clients love. They favorite, download and tip you directly — and
+          Lumière stays completely free, supported by donations.
         </p>
 
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <LinkButton to="/signup" size="lg" className="w-full sm:w-auto">
-            Start free — no card needed
+            Create your free gallery
             <ArrowRight className="h-4 w-4" />
           </LinkButton>
           <LinkButton to="/g/elena-james-wedding" variant="outline" size="lg" className="w-full sm:w-auto">
             <Play className="h-4 w-4" /> View a live gallery
           </LinkButton>
         </div>
-        <p className="mt-4 text-xs text-zinc-500">Loved by 40,000+ photographers worldwide</p>
+        <p className="mt-4 text-xs text-neutral-500">No credit card · Loved by 40,000+ photographers</p>
       </motion.div>
 
-      {/* Hero showcase image */}
+      {/* Hero showcase */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         className="relative mx-auto mt-16 max-w-5xl"
       >
-        <div className="overflow-hidden rounded-3xl border border-white/10 bg-ink-900 shadow-card">
-          <div className="flex items-center gap-1.5 border-b border-white/10 bg-ink-800/60 px-4 py-3">
-            <span className="h-3 w-3 rounded-full bg-red-400/70" />
-            <span className="h-3 w-3 rounded-full bg-amber-400/70" />
-            <span className="h-3 w-3 rounded-full bg-emerald-400/70" />
-            <span className="ml-3 rounded-md bg-white/5 px-3 py-1 text-xs text-zinc-400">
-              lumiere.studio/g/elena-james-wedding
+        <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-lift">
+          <div className="flex items-center gap-1.5 border-b border-neutral-200 bg-neutral-50 px-4 py-3">
+            <span className="h-3 w-3 rounded-full bg-neutral-300" />
+            <span className="h-3 w-3 rounded-full bg-neutral-300" />
+            <span className="h-3 w-3 rounded-full bg-neutral-300" />
+            <span className="ml-3 rounded-md border border-neutral-200 bg-white px-3 py-1 text-xs text-neutral-500">
+              lumiere.photo/g/elena-james-wedding
             </span>
           </div>
           <div className="grid grid-cols-3 gap-2 p-2 sm:grid-cols-4 sm:gap-3 sm:p-3">
@@ -134,14 +126,14 @@ function Hero() {
                 w={400}
                 h={i % 3 === 0 ? 520 : 300}
                 priority={i < 4}
-                className={`rounded-xl ${i % 3 === 0 ? 'row-span-2 aspect-[3/4]' : 'aspect-[4/3]'}`}
+                className={`rounded-lg ${i % 3 === 0 ? 'row-span-2 aspect-[3/4]' : 'aspect-[4/3]'}`}
               />
             ))}
           </div>
         </div>
-        <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 rounded-full border border-white/10 bg-ink-800/90 px-5 py-2.5 text-sm text-zinc-300 shadow-card backdrop-blur">
+        <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 rounded-full border border-neutral-200 bg-white px-5 py-2.5 text-sm text-neutral-700 shadow-lift">
           <span className="inline-flex items-center gap-2">
-            <Heart className="h-4 w-4 fill-fuchsia-500 text-fuchsia-500" /> 38 favorites · 1,284 views
+            <Heart className="h-4 w-4 fill-accent-500 text-accent-500" /> 38 favorites · $182 in tips
           </span>
         </div>
       </motion.div>
@@ -154,13 +146,13 @@ function Hero() {
 function TrustBar() {
   const names = ['VOGUE', 'Aperture', 'StudioMag', 'FRAME', 'Exposé', 'Lensly'];
   return (
-    <section className="container-px py-10">
-      <p className="mb-6 text-center text-xs uppercase tracking-widest text-zinc-600">
+    <section className="container-px py-12">
+      <p className="mb-6 text-center text-xs uppercase tracking-widest text-neutral-400">
         Trusted by studios featured in
       </p>
-      <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 opacity-60">
+      <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
         {names.map((n) => (
-          <span key={n} className="font-display text-lg font-bold tracking-wide text-zinc-400">
+          <span key={n} className="font-display text-lg font-bold tracking-wide text-neutral-400">
             {n}
           </span>
         ))}
@@ -187,31 +179,31 @@ const features = [
   {
     icon: Lock,
     title: 'Private & secure',
-    desc: 'PIN-protected galleries and expiring links keep delivery private.',
+    desc: 'PIN-protected galleries and private links keep delivery safe.',
     span: '',
   },
   {
     icon: Download,
     title: 'Controlled downloads',
-    desc: 'Set resolutions, per-photo or full-gallery zip, with download pins.',
+    desc: 'Set resolutions, per-photo or full-gallery, with download controls.',
     span: '',
   },
   {
-    icon: ShoppingBag,
-    title: 'Sell prints & digitals',
-    desc: 'A built-in store with automated lab fulfillment turns galleries into revenue.',
+    icon: Heart,
+    title: 'Tips & donations',
+    desc: 'Clients can tip you directly from a gallery — a delightful, no-fuss way to get paid for your work.',
     span: 'sm:col-span-2',
   },
   {
-    icon: Palette,
-    title: 'Your brand',
-    desc: 'Logo, colors, fonts and welcome screens — galleries that feel like you.',
+    icon: Share2,
+    title: 'One-link sharing',
+    desc: 'Share a single private link — works instantly on any device.',
     span: '',
   },
   {
-    icon: Globe,
-    title: 'Custom domain',
-    desc: 'Host galleries on your own domain for a seamless client experience.',
+    icon: Smartphone,
+    title: 'Beautiful on mobile',
+    desc: 'Every gallery is fast and flawless on phones and tablets.',
     span: '',
   },
 ];
@@ -221,8 +213,8 @@ function Features() {
     <section id="features" className="container-px scroll-mt-24 py-24">
       <SectionHeading
         eyebrow="Everything you need"
-        title="From shoot to sale, in one place"
-        subtitle="A complete toolkit for delivering, proofing and selling your photography."
+        title="From shoot to share, in one place"
+        subtitle="A complete toolkit for delivering and proofing your photography — all free."
       />
       <div className="mt-12 grid auto-rows-fr gap-4 sm:grid-cols-3">
         {features.map((f, i) => (
@@ -237,13 +229,12 @@ function Features() {
 
 function FeatureCard({ icon: Icon, title, desc }: { icon: typeof Heart; title: string; desc: string }) {
   return (
-    <div className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-ink-900/50 p-6 transition-all duration-300 hover:border-white/20 hover:bg-ink-900">
-      <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-brand-500/10 blur-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-      <div className="mb-4 grid h-11 w-11 place-items-center rounded-xl border border-white/10 bg-gradient-to-br from-brand-500/20 to-fuchsia-500/10 text-brand-200">
+    <div className="group h-full rounded-2xl border border-neutral-200 bg-white p-6 transition-all duration-300 hover:border-neutral-300 hover:shadow-soft">
+      <div className="mb-4 grid h-11 w-11 place-items-center rounded-xl border border-accent-200 bg-accent-50 text-accent-700">
         <Icon className="h-5 w-5" />
       </div>
-      <h3 className="font-display text-lg font-semibold text-white">{title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-zinc-400">{desc}</p>
+      <h3 className="font-display text-lg font-semibold text-neutral-950">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-neutral-600">{desc}</p>
     </div>
   );
 }
@@ -281,49 +272,24 @@ function Showcase() {
   );
 }
 
-/* ---------------------------- Proofing highlight -------------------------- */
-
-function ProofingHighlight() {
-  const stats = [
-    { value: '40k+', label: 'photographers' },
-    { value: '12M', label: 'galleries delivered' },
-    { value: '$48M', label: 'earned in sales' },
-    { value: '4.9★', label: 'average rating' },
-  ];
-  return (
-    <section className="container-px py-12">
-      <div className="grid grid-cols-2 gap-4 rounded-3xl border border-white/10 bg-ink-900/40 p-8 sm:grid-cols-4 sm:p-10">
-        {stats.map((s, i) => (
-          <Reveal key={s.label} delay={i} className="text-center">
-            <div className="font-display text-3xl font-extrabold text-white sm:text-4xl">{s.value}</div>
-            <div className="mt-1 text-sm text-zinc-500">{s.label}</div>
-          </Reveal>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 /* ------------------------------ Testimonials ------------------------------ */
 
 const testimonials = [
   {
     quote:
-      'My clients constantly tell me the galleries feel like a luxury experience. Lumière made my delivery look 10× more professional overnight.',
+      'My clients constantly tell me the galleries feel like a luxury experience — and it costs me nothing. Incredible.',
     name: 'Sofia Marchetti',
     role: 'Wedding Photographer',
     seed: 'tst-1',
   },
   {
-    quote:
-      'The print store paid for my subscription in the first week. I just deliver the gallery and the sales roll in.',
+    quote: 'The tip feature is genius. Happy clients leave a little something and it adds up — no awkward invoicing.',
     name: 'Marcus Hale',
     role: 'Portrait Studio Owner',
     seed: 'tst-2',
   },
   {
-    quote:
-      'Client favoriting changed my workflow. I know exactly which shots to retouch before I even talk to the couple.',
+    quote: 'Client favoriting changed my workflow. I know exactly which shots to retouch before our call.',
     name: 'Aria Chen',
     role: 'Brand & Editorial',
     seed: 'tst-3',
@@ -337,18 +303,18 @@ function Testimonials() {
       <div className="mt-12 grid gap-5 lg:grid-cols-3">
         {testimonials.map((t, i) => (
           <Reveal key={t.name} delay={i}>
-            <figure className="flex h-full flex-col rounded-2xl border border-white/10 bg-ink-900/50 p-6">
+            <figure className="flex h-full flex-col rounded-2xl border border-neutral-200 bg-white p-6 shadow-card">
               <div className="mb-3 flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, j) => (
                   <Star key={j} className="h-4 w-4 fill-amber-400 text-amber-400" />
                 ))}
               </div>
-              <blockquote className="flex-1 text-sm leading-relaxed text-zinc-300">“{t.quote}”</blockquote>
+              <blockquote className="flex-1 text-sm leading-relaxed text-neutral-700">“{t.quote}”</blockquote>
               <figcaption className="mt-5 flex items-center gap-3">
                 <PhotoImage seed={t.seed} w={80} h={80} className="h-10 w-10 rounded-full" />
                 <div>
-                  <div className="text-sm font-semibold text-white">{t.name}</div>
-                  <div className="text-xs text-zinc-500">{t.role}</div>
+                  <div className="text-sm font-semibold text-neutral-950">{t.name}</div>
+                  <div className="text-xs text-neutral-500">{t.role}</div>
                 </div>
               </figcaption>
             </figure>
@@ -365,22 +331,22 @@ function FinalCTA() {
   return (
     <section className="container-px py-24">
       <Reveal>
-        <div className="relative overflow-hidden rounded-4xl border border-white/10 bg-gradient-to-br from-brand-600/20 via-ink-900 to-fuchsia-600/10 px-8 py-16 text-center sm:px-16">
-          <div className="absolute inset-0 bg-grid-faint bg-[size:48px_48px] opacity-30" />
+        <div className="relative overflow-hidden rounded-4xl border border-neutral-200 bg-neutral-950 px-8 py-16 text-center sm:px-16">
+          <div className="absolute inset-0 bg-grid-faint bg-[size:48px_48px] opacity-[0.15]" />
           <div className="relative">
             <h2 className="mx-auto max-w-2xl font-display text-3xl font-extrabold text-white sm:text-5xl">
-              Ready to wow your clients?
+              Start sharing today — it's free
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-zinc-300">
-              Join thousands of photographers delivering galleries that sell. Get started free in under two minutes.
+            <p className="mx-auto mt-4 max-w-xl text-neutral-300">
+              Join thousands of photographers delivering galleries their clients adore. Set up in under two minutes.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <LinkButton to="/signup" size="lg" variant="secondary">
+              <LinkButton to="/signup" size="lg">
                 Create your first gallery <ArrowRight className="h-4 w-4" />
               </LinkButton>
-              <Button size="lg" variant="ghost" onClick={() => scrollToId('pricing')}>
-                Compare plans
-              </Button>
+              <LinkButton to="/g/elena-james-wedding" size="lg" variant="secondary">
+                See it in action
+              </LinkButton>
             </div>
           </div>
         </div>
@@ -402,9 +368,9 @@ export function SectionHeading({
 }) {
   return (
     <Reveal className="mx-auto max-w-2xl text-center">
-      <span className="text-sm font-semibold uppercase tracking-widest text-brand-300">{eyebrow}</span>
-      <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{title}</h2>
-      {subtitle && <p className="mt-4 text-zinc-400">{subtitle}</p>}
+      <span className="text-sm font-semibold uppercase tracking-widest text-accent-700">{eyebrow}</span>
+      <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-neutral-950 sm:text-4xl">{title}</h2>
+      {subtitle && <p className="mt-4 text-neutral-600">{subtitle}</p>}
     </Reveal>
   );
 }
