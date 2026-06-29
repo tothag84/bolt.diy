@@ -111,41 +111,19 @@ export function SiteNav() {
 }
 
 export function SiteFooter() {
-  const cols = [
-    { title: 'Product', items: ['Features', 'Showcase', 'Why it’s free', 'Mobile'] },
-    { title: 'Company', items: ['About', 'Blog', 'Careers', 'Contact'] },
-    { title: 'Resources', items: ['Help center', 'Photographer guides', 'Status', 'Changelog'] },
-    { title: 'Legal', items: ['Privacy', 'Terms', 'Cookies', 'Licenses'] },
-  ];
   return (
     <footer className="border-t border-neutral-200 bg-neutral-50">
-      <div className="container-px py-14">
-        <div className="grid gap-10 md:grid-cols-[1.5fr_repeat(4,1fr)]">
-          <div className="max-w-xs">
-            <Logo />
-            <p className="mt-4 text-sm leading-relaxed text-neutral-500">
-              Free, beautiful client galleries for photographers — supported by tips, not paywalls.
-            </p>
-          </div>
-          {cols.map((c) => (
-            <div key={c.title}>
-              <h4 className="mb-3 text-sm font-semibold text-neutral-900">{c.title}</h4>
-              <ul className="space-y-2">
-                {c.items.map((it) => (
-                  <li key={it}>
-                    <Link to="/" className="text-sm text-neutral-500 transition hover:text-neutral-900">
-                      {it}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-neutral-200 pt-6 text-xs text-neutral-400 sm:flex-row">
-          <span>© {new Date().getFullYear()} Lumière. Made for photographers.</span>
-          <span>Free forever · Powered by community donations.</span>
-        </div>
+      <div className="container-px flex flex-col items-center justify-between gap-4 py-8 sm:flex-row">
+        <Logo />
+        <nav className="flex items-center gap-5 text-sm text-neutral-500">
+          <Link to="/signin" className="transition hover:text-neutral-900">
+            Sign in
+          </Link>
+          <Link to="/signup" className="transition hover:text-neutral-900">
+            Create a gallery
+          </Link>
+        </nav>
+        <span className="text-xs text-neutral-400">© {new Date().getFullYear()} Lumière · Free forever</span>
       </div>
     </footer>
   );

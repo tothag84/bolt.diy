@@ -24,7 +24,6 @@ export function Landing() {
       <BackgroundFX />
       <SiteNav />
       <Hero />
-      <TrustBar />
       <Features />
       <Showcase />
       <section id="support" className="scroll-mt-24 bg-neutral-50 py-24">
@@ -137,26 +136,6 @@ function Hero() {
           </span>
         </div>
       </motion.div>
-    </section>
-  );
-}
-
-/* -------------------------------- Trust bar ------------------------------- */
-
-function TrustBar() {
-  const names = ['VOGUE', 'Aperture', 'StudioMag', 'FRAME', 'Exposé', 'Lensly'];
-  return (
-    <section className="container-px py-12">
-      <p className="mb-6 text-center text-xs uppercase tracking-widest text-neutral-400">
-        Trusted by studios featured in
-      </p>
-      <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
-        {names.map((n) => (
-          <span key={n} className="font-display text-lg font-bold tracking-wide text-neutral-400">
-            {n}
-          </span>
-        ))}
-      </div>
     </section>
   );
 }
