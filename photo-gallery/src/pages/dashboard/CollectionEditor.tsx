@@ -91,7 +91,11 @@ export function CollectionEditor() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={() => window.open(galleryHref(collection.slug), '_blank')}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => window.open(`${galleryHref(collection.slug)}?preview=1`, '_blank')}
+            >
               <ExternalLink className="h-4 w-4" /> Preview
             </Button>
             {collection.status !== 'published' ? (

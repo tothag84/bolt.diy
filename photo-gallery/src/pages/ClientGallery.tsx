@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown, Download, Heart, Lock, Play, Share2 } from 'lucide-react';
 import { Logo } from '@/components/ui/Logo';
@@ -19,6 +19,8 @@ const CLIENT_KEY = 'lumiere-client-email';
 
 export function ClientGallery() {
   const { slug = '' } = useParams();
+  const [params] = useSearchParams();
+  const isPreview = params.get('preview') === '1';
   const collection = useGalleries((s) => s.bySlug(slug));
   const toggleClientFavorite = useGalleries((s) => s.toggleClientFavorite);
   const incrementViews = useGalleries((s) => s.incrementViews);
@@ -51,7 +53,8 @@ export function ClientGallery() {
 
   if (!collection) return <NotFound />;
 
-  if (collection.status === 'draft') {
+  // Drafts are private to the public, but the photographer can preview via ?preview=1.
+  if (collection.status === 'draft' && !isPreview) {
     return (
       <CenteredNote
         title="This gallery isn't published yet"
@@ -110,6 +113,12 @@ export function ClientGallery() {
 
   return (
     <div className="min-h-screen bg-white">
+      {isPreview && collection.status !== 'published' && (
+        <div className="bg-amber-100 px-4 py-2 text-center text-sm font-medium text-amber-900">
+          Preview mode — this gallery is a {collection.status} and isn't visible to clients yet.
+        </div>
+      )}
+
       {/* Cover hero */}
       <header className="relative h-[68vh] min-h-[420px] w-full overflow-hidden">
         <PhotoImage seed={collection.coverSeed} w={1800} h={1200} priority className="absolute inset-0 h-full w-full" />
