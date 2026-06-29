@@ -27,6 +27,7 @@ export const useAuth = create<AuthState>()(
           email,
           studioName: studioName || `${name.split(' ')[0]}'s Studio`,
           avatarSeed: email,
+          plan: 'free',
           createdAt: new Date().toISOString(),
         };
         set({ user });
@@ -43,6 +44,7 @@ export const useAuth = create<AuthState>()(
                 email,
                 studioName: 'My Studio',
                 avatarSeed: email,
+                plan: 'free',
                 createdAt: new Date().toISOString(),
               };
         set({ user });
@@ -51,7 +53,7 @@ export const useAuth = create<AuthState>()(
       signOut: () => set({ user: null }),
       updateUser: (patch) => set((s) => (s.user ? { user: { ...s.user, ...patch } } : s)),
     }),
-    { name: 'lumiere-auth' },
+    { name: 'fpg-auth' },
   ),
 );
 
@@ -178,6 +180,6 @@ export const useGalleries = create<GalleryState>()(
       byId: (id) => get().collections.find((c) => c.id === id),
       reset: () => set({ collections: SEED_COLLECTIONS }),
     }),
-    { name: 'lumiere-galleries-v2' },
+    { name: 'fpg-galleries' },
   ),
 );

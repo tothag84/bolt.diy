@@ -5,12 +5,16 @@ import { cn } from '@/lib/utils';
 
 const faqs = [
   {
-    q: 'Is Lumière really free?',
-    a: 'Yes — completely free for every photographer, with unlimited galleries and photos. There are no paywalls or per-gallery fees. Lumière is supported by optional donations.',
+    q: 'Is FPG really free?',
+    a: 'Yes. The Free plan gives you up to 5 galleries and 500 MB of storage, forever — no credit card needed. You only pay if you want more room.',
   },
   {
-    q: 'How do donations and tips work?',
-    a: "If Lumière helps you, you can chip in any amount to keep it running. Clients can also leave a tip for the photographer right inside a gallery — a simple way to say thank you. Tipping is always optional.",
+    q: 'What does upgrading get me?',
+    a: 'The Plus plan is $5/month (or $50/year) and raises your limits to 25 galleries and 2 GB of total storage. Everything else works the same.',
+  },
+  {
+    q: 'How do client tips work?',
+    a: 'Clients can leave an optional tip for the photographer right inside a gallery — a simple way to say thank you. Tipping is always optional and 100% goes to you.',
   },
   {
     q: 'How do clients access their gallery?',
@@ -19,10 +23,6 @@ const faqs = [
   {
     q: 'Can clients favorite and download photos?',
     a: 'Yes. Clients can mark favorites to share their selects with you and download in the resolutions you allow — per photo or the whole gallery.',
-  },
-  {
-    q: "What's the catch if it's free?",
-    a: "No catch. We keep costs low and rely on community donations instead of subscriptions. Use it as much as you like, and support the project only if you want to.",
   },
 ];
 

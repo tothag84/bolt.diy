@@ -238,7 +238,7 @@ export function ClientGallery() {
       <footer className="border-t border-neutral-200 bg-neutral-50 py-10 text-center">
         <Logo to="/" className="justify-center" />
         <p className="mt-3 text-sm text-neutral-500">
-          Delivered with Lumière ·{' '}
+          Delivered with FPG ·{' '}
           <Link to="/signup" className="font-medium text-accent-700 hover:text-accent-800">
             Create your own free galleries
           </Link>

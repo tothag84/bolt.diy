@@ -16,7 +16,7 @@ export function DonateModal({
 }: {
   open: boolean;
   onClose: () => void;
-  /** Who is being supported, e.g. a photographer name or "Lumière". */
+  /** Who is being supported, e.g. a photographer name. */
   recipient: string;
   subtitle?: string;
   onDonate?: (amount: number) => void;

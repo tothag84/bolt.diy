@@ -1,5 +1,5 @@
 import { SiteNav, SiteFooter } from '@/components/layout/SiteNav';
-import { SupportSection } from '@/components/marketing/SupportSection';
+import { PricingTiers } from '@/components/marketing/PricingTiers';
 import { FaqAccordion } from '@/components/marketing/FaqAccordion';
 import { SectionHeading } from '@/pages/Landing';
 
@@ -13,11 +13,11 @@ export function Pricing() {
       <section className="container-px pt-36 pb-20">
         <SectionHeading
           eyebrow="Pricing"
-          title="It's free. Really."
-          subtitle="Every feature, free for every photographer — supported by optional donations."
+          title="Free forever. Pay only for more storage."
+          subtitle="Start free with 5 galleries and 500 MB. Upgrade to 25 galleries and 2 GB any time."
         />
         <div className="mt-14">
-          <SupportSection />
+          <PricingTiers />
         </div>
       </section>
       <section className="container-px pb-24">

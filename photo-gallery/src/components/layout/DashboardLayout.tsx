@@ -1,10 +1,9 @@
-import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { Heart, Images, LayoutDashboard, LogOut, Settings } from 'lucide-react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Images, LayoutDashboard, LogOut, Settings } from 'lucide-react';
 import { Logo, Avatar } from '@/components/ui/Logo';
 import { Button } from '@/components/ui/Button';
-import { DonateModal } from '@/components/ui/Donate';
-import { useAuth } from '@/lib/store';
+import { useAuth, useGalleries } from '@/lib/store';
+import { formatStorage, planById, storageUsedMb } from '@/lib/plans';
 import { cn } from '@/lib/utils';
 import { toast } from '@/components/ui/Toast';
 
@@ -16,8 +15,13 @@ const nav = [
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, signOut } = useAuth();
+  const collections = useGalleries((s) => s.collections);
   const navigate = useNavigate();
-  const [donate, setDonate] = useState(false);
+
+  const plan = planById(user?.plan ?? 'free');
+  const usedMb = storageUsedMb(collections);
+  const storagePct = Math.min(100, Math.round((usedMb / plan.storageMb) * 100));
+  const galleryPct = Math.min(100, Math.round((collections.length / plan.galleries) * 100));
 
   return (
     <div className="min-h-screen bg-neutral-50 lg:grid lg:grid-cols-[260px_1fr]">
@@ -44,15 +48,23 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           ))}
         </nav>
 
-        {/* Support card */}
-        <div className="mb-3 rounded-xl border border-accent-200 bg-accent-50 p-4">
-          <div className="flex items-center gap-2 text-sm font-semibold text-neutral-900">
-            <Heart className="h-4 w-4 text-accent-600" /> Lumière is free
+        {/* Plan & storage card */}
+        <div className="mb-3 rounded-xl border border-neutral-200 bg-white p-4">
+          <div className="flex items-center justify-between text-sm font-semibold text-neutral-900">
+            <span>{plan.name} plan</span>
+            {plan.id === 'free' && (
+              <Link to="/app/settings" className="text-xs font-medium text-accent-700 hover:text-accent-800">
+                Upgrade
+              </Link>
+            )}
           </div>
-          <p className="mt-1 text-xs text-neutral-600">Donations keep galleries free for everyone.</p>
-          <Button size="sm" className="mt-3 w-full" onClick={() => setDonate(true)}>
-            Support us
-          </Button>
+
+          <Meter label="Galleries" value={`${collections.length} / ${plan.galleries}`} pct={galleryPct} />
+          <Meter
+            label="Storage"
+            value={`${formatStorage(usedMb)} / ${formatStorage(plan.storageMb)}`}
+            pct={storagePct}
+          />
         </div>
 
         <button
@@ -69,13 +81,11 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
       {/* Main */}
       <div className="flex min-h-screen flex-col">
-        {/* Mobile top bar */}
         <div className="flex items-center justify-between border-b border-neutral-200 bg-white px-5 py-3 lg:hidden">
           <Logo to="/app" />
           {user && <Avatar seed={user.avatarSeed} name={user.name} size={32} />}
         </div>
 
-        {/* Desktop header */}
         <header className="hidden items-center justify-between border-b border-neutral-200 bg-white px-8 py-4 lg:flex">
           <div />
           <div className="flex items-center gap-3">
@@ -110,13 +120,23 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           ))}
         </div>
       </div>
+    </div>
+  );
+}
 
-      <DonateModal
-        open={donate}
-        onClose={() => setDonate(false)}
-        recipient="Lumière"
-        subtitle="Lumière is free for every photographer. If it helps you, a small tip keeps it running."
-      />
+function Meter({ label, value, pct }: { label: string; value: string; pct: number }) {
+  return (
+    <div className="mt-3">
+      <div className="flex items-center justify-between text-xs text-neutral-600">
+        <span>{label}</span>
+        <span className="tabular-nums">{value}</span>
+      </div>
+      <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-neutral-200">
+        <div
+          className={cn('h-full rounded-full transition-all', pct >= 100 ? 'bg-danger-500' : 'bg-accent-500')}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
     </div>
   );
 }

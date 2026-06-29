@@ -10,7 +10,10 @@ export function Logo({ className, to = '/' }: { className?: string; to?: string 
           <circle cx="16" cy="16" r="3.25" fill="#2563eb" />
         </svg>
       </span>
-      <span className="font-display text-[19px] font-bold tracking-tight text-neutral-950">Lumière</span>
+      <span className="font-display text-[19px] font-bold tracking-tight text-neutral-950">
+        FPG
+        <span className="ml-1.5 hidden text-sm font-medium text-neutral-400 sm:inline">Free Photo Gallery</span>
+      </span>
     </Link>
   );
 }

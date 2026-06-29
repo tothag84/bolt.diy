@@ -20,7 +20,8 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Field, Input, Select, Textarea } from '@/components/ui/Input';
 import { PhotoGrid } from '@/components/gallery/PhotoGrid';
-import { useGalleries } from '@/lib/store';
+import { useAuth, useGalleries } from '@/lib/store';
+import { planById } from '@/lib/plans';
 import { toast } from '@/components/ui/Toast';
 import { classByStatus, cn } from '@/lib/utils';
 import type { Collection, GalleryLayout, GalleryStatus } from '@/lib/types';
@@ -34,6 +35,8 @@ export function CollectionEditor() {
   const navigate = useNavigate();
   const isNew = id === 'new' || !id;
 
+  const user = useAuth((s) => s.user);
+  const collectionCount = useGalleries((s) => s.collections.length);
   const byId = useGalleries((s) => s.byId);
   const createCollection = useGalleries((s) => s.createCollection);
   const updateCollection = useGalleries((s) => s.updateCollection);
@@ -44,11 +47,17 @@ export function CollectionEditor() {
   const [workingId, setWorkingId] = useState<string | null>(isNew ? null : id ?? null);
   useEffect(() => {
     if (isNew && !workingId) {
+      const plan = planById(user?.plan ?? 'free');
+      if (collectionCount >= plan.galleries) {
+        toast.error(`Your ${plan.name} plan allows ${plan.galleries} galleries. Upgrade for more room.`);
+        navigate('/app/collections', { replace: true });
+        return;
+      }
       const c = createCollection({ title: 'Untitled Collection', status: 'draft' });
       setWorkingId(c.id);
       navigate(`/app/collections/${c.id}`, { replace: true });
     }
-  }, [isNew, workingId, createCollection, navigate]);
+  }, [isNew, workingId, createCollection, navigate, user, collectionCount]);
 
   const collection = byId(workingId ?? id ?? '');
   const [tab, setTab] = useState<Tab>('photos');

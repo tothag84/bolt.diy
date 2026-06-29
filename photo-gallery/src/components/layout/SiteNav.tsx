@@ -9,7 +9,7 @@ import { cn, scrollToId } from '@/lib/utils';
 const links = [
   { label: 'Features', id: 'features' },
   { label: 'Showcase', id: 'showcase' },
-  { label: 'Why free', id: 'support' },
+  { label: 'Pricing', id: 'pricing' },
   { label: 'FAQ', id: 'faq' },
 ];
 
@@ -123,7 +123,7 @@ export function SiteFooter() {
             Create a gallery
           </Link>
         </nav>
-        <span className="text-xs text-neutral-400">© {new Date().getFullYear()} Lumière · Free forever</span>
+        <span className="text-xs text-neutral-400">© {new Date().getFullYear()} FPG · Free Photo Gallery</span>
       </div>
     </footer>
   );

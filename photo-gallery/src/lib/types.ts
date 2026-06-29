@@ -1,9 +1,12 @@
+export type PlanId = 'free' | 'pro';
+
 export interface User {
   id: string;
   name: string;
   email: string;
   studioName: string;
   avatarSeed: string;
+  plan: PlanId;
   createdAt: string;
 }
 

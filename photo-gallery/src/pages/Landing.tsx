@@ -1,20 +1,9 @@
 import { motion } from 'framer-motion';
-import {
-  ArrowRight,
-  Heart,
-  Download,
-  Lock,
-  Images,
-  Star,
-  Play,
-  Share2,
-  Sparkles,
-  Smartphone,
-} from 'lucide-react';
+import { ArrowRight, Heart, Download, Lock, Images, Play, Share2, Smartphone, Sparkles } from 'lucide-react';
 import { SiteNav, SiteFooter } from '@/components/layout/SiteNav';
 import { LinkButton } from '@/components/ui/Button';
 import { Reveal } from '@/components/ui/Reveal';
-import { SupportSection } from '@/components/marketing/SupportSection';
+import { PricingTiers } from '@/components/marketing/PricingTiers';
 import { FaqAccordion } from '@/components/marketing/FaqAccordion';
 import { PhotoImage } from '@/components/gallery/PhotoImage';
 
@@ -26,19 +15,18 @@ export function Landing() {
       <Hero />
       <Features />
       <Showcase />
-      <section id="support" className="scroll-mt-24 bg-neutral-50 py-24">
+      <section id="pricing" className="scroll-mt-24 bg-neutral-50 py-24">
         <div className="container-px">
           <SectionHeading
-            eyebrow="Free + supported by you"
-            title="Free for everyone, forever"
-            subtitle="No subscriptions. No paywalls. Lumière stays free thanks to optional donations."
+            eyebrow="Pricing"
+            title="Free forever. Pay only for more storage."
+            subtitle="Start free with 5 galleries. Need more room? Upgrade any time."
           />
           <div className="mt-12">
-            <SupportSection />
+            <PricingTiers />
           </div>
         </div>
       </section>
-      <Testimonials />
       <section id="faq" className="container-px scroll-mt-24 py-24">
         <SectionHeading eyebrow="FAQ" title="Questions, answered" />
         <div className="mt-12">
@@ -75,7 +63,7 @@ function Hero() {
       >
         <span className="pill mx-auto mb-7">
           <Sparkles className="h-3.5 w-3.5 text-accent-600" />
-          100% free · supported by tips
+          Free Photo Gallery
         </span>
 
         <h1 className="font-display text-5xl font-extrabold leading-[1.04] tracking-tight text-neutral-950 sm:text-7xl">
@@ -85,8 +73,8 @@ function Hero() {
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-neutral-600">
-          Share stunning, on-brand galleries your clients love. They favorite, download and tip you directly — and
-          Lumière stays completely free, supported by donations.
+          Share stunning galleries your clients love — they favorite, download and tip you directly. Free forever; pay
+          only if you need more storage.
         </p>
 
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -98,7 +86,7 @@ function Hero() {
             <Play className="h-4 w-4" /> View a live gallery
           </LinkButton>
         </div>
-        <p className="mt-4 text-xs text-neutral-500">No credit card · Loved by 40,000+ photographers</p>
+        <p className="mt-4 text-xs text-neutral-500">No credit card · 5 galleries free</p>
       </motion.div>
 
       {/* Hero showcase */}
@@ -114,7 +102,7 @@ function Hero() {
             <span className="h-3 w-3 rounded-full bg-neutral-300" />
             <span className="h-3 w-3 rounded-full bg-neutral-300" />
             <span className="ml-3 rounded-md border border-neutral-200 bg-white px-3 py-1 text-xs text-neutral-500">
-              lumiere.photo/g/elena-james-wedding
+              fpg.photo/g/elena-james-wedding
             </span>
           </div>
           <div className="grid grid-cols-3 gap-2 p-2 sm:grid-cols-4 sm:gap-3 sm:p-3">
@@ -129,11 +117,6 @@ function Hero() {
               />
             ))}
           </div>
-        </div>
-        <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 rounded-full border border-neutral-200 bg-white px-5 py-2.5 text-sm text-neutral-700 shadow-lift">
-          <span className="inline-flex items-center gap-2">
-            <Heart className="h-4 w-4 fill-accent-500 text-accent-500" /> 38 favorites · $182 in tips
-          </span>
         </div>
       </motion.div>
     </section>
@@ -152,7 +135,7 @@ const features = [
   {
     icon: Heart,
     title: 'Client proofing',
-    desc: 'Clients favorite and comment to send you their selects in one tap.',
+    desc: 'Clients favorite to send you their selects in one tap.',
     span: '',
   },
   {
@@ -169,7 +152,7 @@ const features = [
   },
   {
     icon: Heart,
-    title: 'Tips & donations',
+    title: 'Tips from clients',
     desc: 'Clients can tip you directly from a gallery — a delightful, no-fuss way to get paid for your work.',
     span: 'sm:col-span-2',
   },
@@ -193,7 +176,7 @@ function Features() {
       <SectionHeading
         eyebrow="Everything you need"
         title="From shoot to share, in one place"
-        subtitle="A complete toolkit for delivering and proofing your photography — all free."
+        subtitle="A complete, simple toolkit for delivering and proofing your photography."
       />
       <div className="mt-12 grid auto-rows-fr gap-4 sm:grid-cols-3">
         {features.map((f, i) => (
@@ -251,59 +234,6 @@ function Showcase() {
   );
 }
 
-/* ------------------------------ Testimonials ------------------------------ */
-
-const testimonials = [
-  {
-    quote:
-      'My clients constantly tell me the galleries feel like a luxury experience — and it costs me nothing. Incredible.',
-    name: 'Sofia Marchetti',
-    role: 'Wedding Photographer',
-    seed: 'tst-1',
-  },
-  {
-    quote: 'The tip feature is genius. Happy clients leave a little something and it adds up — no awkward invoicing.',
-    name: 'Marcus Hale',
-    role: 'Portrait Studio Owner',
-    seed: 'tst-2',
-  },
-  {
-    quote: 'Client favoriting changed my workflow. I know exactly which shots to retouch before our call.',
-    name: 'Aria Chen',
-    role: 'Brand & Editorial',
-    seed: 'tst-3',
-  },
-];
-
-function Testimonials() {
-  return (
-    <section className="container-px py-24">
-      <SectionHeading eyebrow="Loved by photographers" title="Don't just take our word for it" />
-      <div className="mt-12 grid gap-5 lg:grid-cols-3">
-        {testimonials.map((t, i) => (
-          <Reveal key={t.name} delay={i}>
-            <figure className="flex h-full flex-col rounded-2xl border border-neutral-200 bg-white p-6 shadow-card">
-              <div className="mb-3 flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, j) => (
-                  <Star key={j} className="h-4 w-4 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <blockquote className="flex-1 text-sm leading-relaxed text-neutral-700">“{t.quote}”</blockquote>
-              <figcaption className="mt-5 flex items-center gap-3">
-                <PhotoImage seed={t.seed} w={80} h={80} className="h-10 w-10 rounded-full" />
-                <div>
-                  <div className="text-sm font-semibold text-neutral-950">{t.name}</div>
-                  <div className="text-xs text-neutral-500">{t.role}</div>
-                </div>
-              </figcaption>
-            </figure>
-          </Reveal>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 /* ------------------------------- Final CTA -------------------------------- */
 
 function FinalCTA() {
@@ -317,7 +247,7 @@ function FinalCTA() {
               Start sharing today — it's free
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-neutral-300">
-              Join thousands of photographers delivering galleries their clients adore. Set up in under two minutes.
+              Create your first gallery in under two minutes. No credit card required.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <LinkButton to="/signup" size="lg">

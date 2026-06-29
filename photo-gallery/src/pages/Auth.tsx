@@ -8,7 +8,7 @@ import { Field, Input } from '@/components/ui/Input';
 import { PhotoImage } from '@/components/gallery/PhotoImage';
 import { useAuth } from '@/lib/store';
 import { toast } from '@/components/ui/Toast';
-import { FREE_FEATURES } from '@/lib/donations';
+import { planById } from '@/lib/plans';
 
 function AuthShell({ children }: { children: React.ReactNode }) {
   return (
@@ -55,7 +55,7 @@ export function SignUp() {
       return;
     }
     signUp({ name: form.name, email: form.email, studioName: form.studioName });
-    toast.success(`Welcome to Lumière, ${form.name.split(' ')[0]}!`);
+    toast.success(`Welcome to FPG, ${form.name.split(' ')[0]}!`);
     navigate('/app');
   };
 
@@ -106,7 +106,7 @@ export function SignUp() {
       </form>
 
       <ul className="mt-6 grid grid-cols-1 gap-1.5 sm:grid-cols-2">
-        {FREE_FEATURES.slice(0, 4).map((f) => (
+        {planById('free').features.slice(0, 4).map((f) => (
           <li key={f} className="flex items-center gap-2 text-xs text-neutral-500">
             <Check className="h-3.5 w-3.5 text-accent-600" /> {f}
           </li>
@@ -171,7 +171,7 @@ export function SignIn() {
       <p className="mt-3 text-center text-xs text-neutral-400">Demo mode — any email signs you in.</p>
 
       <p className="mt-6 text-center text-sm text-neutral-500">
-        New to Lumière?{' '}
+        New to FPG?{' '}
         <Link to="/signup" className="font-medium text-accent-700 hover:text-accent-800">
           Create an account
         </Link>
