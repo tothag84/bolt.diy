@@ -19,9 +19,12 @@ function ScrollToTop() {
   return null;
 }
 
+// Strip the trailing slash so it works as a router basename (e.g. "/bolt.diy").
+const basename = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Landing />} />
